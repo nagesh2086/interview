@@ -1,25 +1,23 @@
 package evolution.producer.consumer;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
-public class ProducerConsumerBlockingQueue {
+public class ProducerConsumerWithBlockingQueue {
 
 	public static void main(String[] args) throws InterruptedException {
-		final BlockingQueue<Integer> b = new LinkedBlockingQueue<Integer>();
-
+		BlockingQueue<Integer> queue = new LinkedBlockingDeque<Integer>();
 		Thread producer = new Thread(new Runnable() {
 
+			@Override
 			public void run() {
-				int value = 0;
+
 				try {
+					int i = 0;
 					while (true) {
-						b.put(value);
-
-						System.out.println("produced: " + value);
-
-						value++;
-
+						queue.put(i);
+						System.out.println(" produced " + i);
+						i++;
 						Thread.sleep(1000);
 					}
 				} catch (InterruptedException e) {
@@ -30,24 +28,25 @@ public class ProducerConsumerBlockingQueue {
 
 		Thread consumer = new Thread(new Runnable() {
 
+			@Override
 			public void run() {
 				try {
-					int value = b.take();
-
-					System.out.println("Consumed: " + value);
-
-					Thread.sleep(1000);
+					while (true) {
+						Integer consumed = queue.take();
+						System.out.println("Consumed " + consumed);
+						Thread.sleep(1000);
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		});
 
-		consumer.start();
 		producer.start();
-		
-		consumer.join();
+		consumer.start();
+
 		producer.join();
-		
+		consumer.join();
 	}
+
 }

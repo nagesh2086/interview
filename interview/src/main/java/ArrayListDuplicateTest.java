@@ -2,8 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayListDuplicateTest {
-
+	private static final int MAXIMUM_CAPACITY = 1 << 30;
 	public static void main(String[] args) {
+		System.out.println(MAXIMUM_CAPACITY);
+		
 		final int initialCapacity = 10;
 		List<Integer> list = new ArrayList<Integer>(initialCapacity);
 		/*for (int i = 0; i < initialCapacity; i++) {
